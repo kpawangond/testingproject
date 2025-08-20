@@ -1,78 +1,77 @@
-import os
 from pathlib import Path
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # -------------------
-# SECURITY SETTINGS
+# SECURITY
 # -------------------
-DEBUG = False  # Must be False in production
-ALLOWED_HOSTS = ['*']  # Replace with your Render URL
+SECRET_KEY = "django-insecure-44!j(-u1rbt)b&_-dxp$$ya&4gx9p4e^avmicxe0@3v1vy4(5j)"
+
+# For development
+DEBUG = False
+
+ALLOWED_HOSTS = ['*']
 
 # -------------------
-# APPLICATION DEFINITION
+# APPLICATIONS
 # -------------------
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 
     # Your apps
-    'testApp',
+    "testApp",
 
     # Tailwind
-    'tailwind',
-    'theme',
+    "tailwind",
+    "theme",
 ]
 
-TAILWIND_APP_NAME = 'theme'
-INTERNAL_IPS = ['127.0.0.1']
+TAILWIND_APP_NAME = "theme"
+INTERNAL_IPS = ["127.0.0.1"]
 
-# NPM path (Windows)
-NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
-
-# -------------------
-# MIDDLEWARE
-# -------------------
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",   # 👈 add this line
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'testproject.urls'
+ROOT_URLCONF = "testproject.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # Add custom template dirs if needed
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],  # ✅ add templates folder
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'testproject.wsgi.application'
+WSGI_APPLICATION = "testproject.wsgi.application"
 
 # -------------------
 # DATABASE
 # -------------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Switch to PostgreSQL in production
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -80,26 +79,30 @@ DATABASES = {
 # PASSWORD VALIDATION
 # -------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 # -------------------
 # INTERNATIONALIZATION
 # -------------------
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
 # -------------------
-# STATIC FILES (CSS, JS, IMAGES)
+# STATIC FILES
 # -------------------
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # collectstatic will place files here
+STATICFILES_DIRS = [
+    BASE_DIR / "static",   # if you keep extra static files
+]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Tailwind CSS
-# Make sure Tailwind build is done before collectstatic in production
-# python manage.py tailwind build
+# -------------------
+# DEFAULT PK
+# -------------------
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

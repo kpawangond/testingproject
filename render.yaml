@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: django-app
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py migrate --noinput
+      python manage.py tailwind build   # 👈 build Tailwind first
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn testproject.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: testproject.settings
+      - key: DJANGO_DEBUG
+        value: "False"
